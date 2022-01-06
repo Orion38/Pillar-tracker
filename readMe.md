@@ -26,7 +26,7 @@ tracker2("C:\Users\[username]\[...]\experiementFolder")
 
 3) If the borders were not registered before or are not loaded, the program will prompt you to point the 2 positions of the edge of the pillars for each stack found in the folder. These positions correspond to the edges of the pillar that would be tracked. Point the **first the inside edge of the left pillar**, and **then the inside edge of the right pillars** (see image below to identify the postion to click). The program automatically open the next image. 
 
-![In red, the initial position of the the inside edge of the left pillar, in green the the inside edge of the right pillar.](/assets/images/initPosition.png)
+![In red, the initial position of the the inside edge of the left pillar, in green the the inside edge of the right pillar.](https://github.com/Orion38/Pillar-tracker/blob/main/assets/images/initPosition.PNG)
 
 N.B. : The order of treatment of each TIFF file depends on the creation date of the file, starting with the oldest.
 
