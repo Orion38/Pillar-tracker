@@ -2,7 +2,7 @@ function tracker(expDirp)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 interpolation_factor = 20;  % Interpollation of the edges.
-sav=5;                      % If >0, save profile with tracked point every n images
+sav=1;                      % If >0, save profile with tracked point every n images
 loadBorders=1;              % Try to load the boarders if they already exist.
 skip_tracking=0;            % Skip the tracking of the edges and load results from last run.
 chk_bord=0;                 % Display the position of each edge used on the profile (to be used in case of automatic edge selection).
