@@ -47,7 +47,31 @@ Refer to the instructions above in Usage to reproduce results on the test set.
 
 Please find the expected ouput in */expectedResults*
 
-The typical processing time of the test subset (3 stacks of 27 images each) on a "normal" desktop computer is less than 30 seconds. 
+The typical processing time of the test subset (3 stacks of 27 images each) on a "normal" desktop computer is less than 30 seconds.
+
+## Detailed description of functionnalities
+
+For each stack provided, the script ask for the 2 positions of the inside edges to be tracked on the first image. It then reduces the image to its average horizontal profile and associate to the 2 
+positions a patch of the corresponding profile. On each average horizontal profile of each image of the stack, for both patches, it searches the new position by identifying where the patch of 
+profile best correlates to the new image profile. It then saves the distance between the two positions and compares it to the initial distance between the two pillars. 
+
+In the *tracker.m* file, several parameters can be adjusted : 
+
+- *interpolation_factor* allow to increase the resolution of measurement by interpolating the profiles by an integer factor.
+
+- If *sav* is an integer >0, it saves the *check stacks* (see *expected results*), saving 1 in image every *sav* images comapred to the initial stack.
+
+- *loadBoardes* is 0 or 1. If *loadBoardes* is equal to one and previous pillars edges were selected for the stacks, the program load these poistions.
+
+- *skip_tracking* imposed the program to skip the tracking if it is equal to one (will display previously computed results instead).
+
+- *chk_bord* will display the calculated line profile during the edges selection to help identify the maximum contrast areas.
+
+- If *saveTable" is equal to one, the script will save the results as an *.xls* file.
+
+- If *dis* is equal to one, the script will display the figure after the computation.
+
+- *nbImgBefore* is an integer corresponding to the number of images to average to for the reference image/line profile to choose the position and track the edges. 
 
 
 ## Contributing
