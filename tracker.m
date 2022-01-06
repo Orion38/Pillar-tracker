@@ -1,4 +1,4 @@
-function tracker(expDirp)
+function tracker(expDir)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 interpolation_factor = 20;  % Interpollation of the edges.
@@ -10,7 +10,7 @@ saveTable=1;                % Save the results in a xls file of the name of the 
 dis=1;                      % Display the evolution of distance between the pillars.
 nbImgBefore=3;              % Numbers to use as reference before stimulation. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-p=fullfile(expDirp,'stacks');
+p=fullfile(expDir,'stacks');
 listing=dir(fullfile(p,'*.tiff'));
 if isempty(listing)
     listing=dir(fullfile(p,'*.tif'));
@@ -22,16 +22,22 @@ end
 nbStack=length(listing);
 [~,idx]=sort([listing.datenum]);
 
+wellNames=cell(nbStack,1);
+
 for i=1:nbStack
     fname(i)=string(listing(idx(i)).name);
     a=strsplit(listing(idx(i)).name,'.');
-    wellNames(i)=string(a{1});
+    wellNames{i}=a{1};
 end
+if 7~=exist(fullfile(expDir,'save'),"dir")
+    mkdir(fullfile(expDir,'save'))
+end
+
 %% border selection
 % Load the borders if asked and they exist
 if loadBorders
     try
-        load(fullfile(expDirp,'save','lastBords'),'Peak1','Peak2','R1','R2');
+        load(fullfile(expDir,'save','lastBords'),'Peak1','Peak2','R1','R2');
         disp('Borders Loaded.')
     
     catch
@@ -47,10 +53,10 @@ if loadBorders
             [~,R1(:,i),Peak1(i),~,R2(:,i),Peak2(i)]=select_bord(I,...
                 profile,interpolation_factor,chk_bord);
         end
-        save(fullfile(expDirp,'save','lastBords'),'R1','R2','Peak1','Peak2')
+        save(fullfile(expDir,'save','lastBords'),'R1','R2','Peak1','Peak2')
     end
 else
-    for i=idx(1:length(wellNames))
+    for i=1:nbStack
         I=double(imread(fullfile(p,fname(i)), 1))/256;
         for j=2:nbImgBefore
             I=I+double(imread(fullfile(p,fname(i)), j))/256;
@@ -60,15 +66,14 @@ else
         [~,R1(:,i),Peak1(i),~,R2(:,i),Peak2(i)]=select_bord(I,profile,...
             interpolation_factor,chk_bord);
     end
-    mkdir(fullfile(expDirp,'save'))
-    save(fullfile(expDirp,'save','lastBords'),'R1','R2','Peak1','Peak2')
+    save(fullfile(expDir,'save','lastBords'),'R1','R2','Peak1','Peak2')
 end
 
 %%
 disp('Tracking starts ')
 
-nFr=zeros(length(wellNames),1);
-for i=1:length(wellNames)
+nFr=zeros(nbStack,1);
+for i=1:nbStack
     info = imfinfo(char(fullfile(p,fname(i))));
     nFr(i) = numel(info);
 end
@@ -76,11 +81,12 @@ end
 nFrame=max(nFr);
 
 if ~skip_tracking
-    diff=zeros(nFrame,length(wellNames));
-    bordD=zeros(nFrame,length(wellNames));
-    bordG=zeros(nFrame,length(wellNames));
+    diff=zeros(nFrame,nbStack);
+    bordD=zeros(nFrame,nbStack);
+    bordG=zeros(nFrame,nbStack);
 
-    for i=1:length(wellNames)
+    for i=1:nbStack
+        tic
         display(cat(2,num2str(i)))
         [diff(1:nFr(i),i),gap(i),bordG(1:nFr(i),i),bordD(1:nFr(i),i)]=...
             suivi(fname(i),p,nFr(i),interpolation_factor,sav,R1(:,i),...
@@ -88,18 +94,16 @@ if ~skip_tracking
         toc
     end
     disp('Tracking finished')
-    mkdir(fullfile(expDirp,'save'))
-    save(fullfile(expDirp,'save','lastDiff'),'diff','gap','bordG','bordD')
+    save(fullfile(expDir,'save','lastDiff'),'diff','gap','bordG','bordD')
 else
-    load(fullfile(expDirp,'save','lastDiff'),'diff','gap','bordG','bordD')
+    load(fullfile(expDir,'save','lastDiff'),'diff','gap')
     disp('Tracking skipped!')
-    toc
 end
 
 %%
 if saveTable
     T=array2table(cat(1,gap,zeros(1,length(gap)),diff),'VariableNames',wellNames);
-    writetable(T,char(fullfile(expDirp,'diff.xls')),'WriteRowNames',true);
+    writetable(T,char(fullfile(expDir,'diff.xls')),'WriteRowNames',true);
     disp(cat(2,'Results save in table as ',cat(2,'.xls')))
 end
 
@@ -117,8 +121,11 @@ if dis
             warning('Cannot use wellNames ');
         end
     end
-    mkdir(fullfile(expDirp,'figures'))
-    savefig(fullfile(expDirp,'figures','diff'))
+    if 7~=exist(fullfile(expDir,'figures'),"dir")
+        mkdir(fullfile(expDir,'figures'))
+    end
+    savefig(fullfile(expDir,'figures','diff'))
+
 end
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -171,8 +178,6 @@ function [profile,X]=profiler(I, interpolation_factor)
 end
 
 function [diff,spacePillars,bordG, bordD]=suivi(fname,path,nFrame,interpF,save,R1,Peak1,R2,Peak2)
-    tic
-    
     interpolation_factor = interpF;
     
     temp=double(imread(fullfile(path,fname), 1))/256;
@@ -203,7 +208,9 @@ function [diff,spacePillars,bordG, bordD]=suivi(fname,path,nFrame,interpF,save,R
     spacePillars=mean(bordD(1:3)-bordG(1:3));
     diff=bordD-bordG-spacePillars;
     if save>0
-        mkdir(fullfile(path,'check'))
+        if 7~=exist(fullfile(path,'check'),"dir")
+            mkdir(fullfile(path,'check'))
+        end
     
            A=zeros(imsize(1),imsize(2),3);
            A(:,:,1)=reshape(I(:,:,1),[imsize(1) imsize(2)]);
@@ -230,8 +237,6 @@ function [diff,spacePillars,bordG, bordD]=suivi(fname,path,nFrame,interpF,save,R
            imwrite(A,char(fullfile(path,'check',fname)),'tiff','WriteMode','append');
        end
     end
-    toc
-    
     diff=-diff/interpolation_factor;
     spacePillars=spacePillars/interpolation_factor;
 end
