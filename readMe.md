@@ -1,6 +1,6 @@
-# Tracker
+# Pillar Tracker
 
-Tracker is a small MATLAB script used to measure 
+Pillar Tracker is a small MATLAB script used to measure the distance between the two interior edges of the pillars of three-dimensional (3D) microtissue models of overtime. 
 
 ## System requirements
 
