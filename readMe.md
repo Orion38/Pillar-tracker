@@ -43,11 +43,11 @@ N.B. : The order of treatment of each TIFF file depends on the creation date of 
 
 ## Demo
 
-Refer to the instructions above in Usage to reproduce results on the test set.
+Refer to the instructions above in *Usage* to reproduce results on the test set provided in */stacks*.
 
-Please find the expected ouput in */expectedResults*
+Please find the expected ouput in */expectedResults*. Your results may differ slightly from the expected output depending on the position chose for the tracking. 
 
-The typical processing time of the test subset (3 stacks of 27 images each) on a "normal" desktop computer is less than 30 seconds.
+The typical processing time of the test set (3 stacks of 27 images each) on a "normal" desktop computer is less than 20 seconds.
 
 ## Detailed description of functionnalities
 
