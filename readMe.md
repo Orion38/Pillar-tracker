@@ -1,16 +1,17 @@
 # Pillar Tracker
 
 Pillar Tracker is a small MATLAB script used to measure the distance between the two 
-interior edges of the pillars of three-dimensional (3D) microtissue models of overtime. 
+interior edges of the pillars of three-dimensional (3D) microtissue models overtime. 
 
 ## System requirements
 
-The program was run on a computer with Windows 10 with a intel i7 11th generation and 16 GB 
-of RAM, using MATLAB 2018a or more recent. 
+The program was run on a computer with Windows 10 with a CPU intel i7 11th generation and 
+16 GB of RAM, using MATLAB 2018a or more recent. 
 
 ## Installation
 
-Put the script in folder include in your [MATLAB search path](https://fr.mathworks.com/help/matlab/matlab_env/what-is-the-matlab-search-path.html),
+Put the script in a folder include in your 
+[MATLAB search path](https://fr.mathworks.com/help/matlab/matlab_env/what-is-the-matlab-search-path.html),
 or add the file directly to your search path : 
 
 ```MATLAB
@@ -19,17 +20,18 @@ addpath('C:\Users\[username]\[...]\tracker.m')
 
 ## Usage
 
-1) Put all the TIFF files in a subfolder named "stacks" in a dedicated folder.
+1) Put all TIFF files in a subfolder named "stacks" in a dedicated folder.
 
-2) Call the MATLAB function tracker indicating the path to the dedicated folder containing the "stacks" subfolder as a argument. 
+2) Call the MATLAB function tracker indicating the path to the dedicated folder containing 
+the "stacks" subfolder as an argument. 
 
 ```MATLAB
-tracker2("C:\Users\[username]\[...]\experiementFolder")
+tracker("C:\Users\[username]\[...]\experiementFolder")
 ```
 
 3) If the borders were not registered before or are not loaded, the program will prompt 
-you to point the 2 positions of the edge of the pillars for each stack found in the folder. 
-These positions correspond to the edges of the pillar that would be tracked. 
+you to point the 2 positions of the inside edges of the pillars for each stack found in 
+the folder. These positions correspond to the edges of the pillar that would be tracked. 
 Point the **first the inside edge of the left pillar**, and **then the inside edge of the 
 right pillars** (see image below to identify the position to click). The program 
 automatically opens the next image. 
@@ -41,7 +43,7 @@ N.B. : The order of treatment of each TIFF file depends on the creation date of 
 starting with the oldest.
 
 ## Expected results
- Once the program starts, it measures the shortening of the distances between the two edges
+ Once the program starts, it measures the shortening of the distance between the two edges
 for each image of the stack. An example for the expected results can be found in 
 */expectedResults*. For each stack, the script return : 
 
@@ -55,9 +57,9 @@ the second line of the table and the variations of this distance in pixel over e
 image in the lines 4 to the end.
 
 - In the folder *experiementFolder/save/*, a file *lastBords.mat* with the last tracking 
-position for each file and *lastDiff.mat* containing 2 variables Gap and Diff corresponding 
-to the Gap of each file and the variation of distance in pixel relative to Gap for each 
-image. 
+position for each file and a file *lastDiff.mat* containing 2 variables *Gap* and *Diff* 
+corresponding to the Gap of each file and the variation of distance in pixel relative to 
+Gap for each image. 
 
 - In the folder *experiementFolder/stacks/check/*, a stack with a name corresponding to 
 each original file name in *experiementFolder/stacks/* with a color line on each pillar as 
@@ -69,7 +71,7 @@ Refer to the instructions above in *Usage* to reproduce results on the test set 
 in */stacks*.
 
 Please find the expected ouput in */expectedResults*. Your results may differ slightly 
-from the expected output depending on the initiam position chosen for the tracking. 
+from the expected output depending on the initial position chosen for the tracking. 
 
 The typical processing time of the test set (3 stacks of 27 images each) on a "normal" 
 desktop computer is less than 20 seconds.
