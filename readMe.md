@@ -5,12 +5,12 @@ interior edges of the pillars of three-dimensional (3D) microtissue models overt
 
 ## System requirements
 
-The program was run on a computer with Windows 10 with a CPU intel i7 11th generation and 
+The program was run on a Windows 10 computer with a CPU intel i7 11th generation and 
 16 GB of RAM, using MATLAB 2018a or more recent. 
 
 ## Installation
 
-Put the script in a folder include in your 
+Put the script in a folder included in your 
 [MATLAB search path](https://fr.mathworks.com/help/matlab/matlab_env/what-is-the-matlab-search-path.html),
 or add the file directly to your search path : 
 
@@ -20,43 +20,43 @@ addpath('C:\Users\[username]\[...]\tracker.m')
 
 ## Usage
 
-1) Put all TIFF files in a subfolder named "stacks" in a dedicated folder.
+1) Put all the TIF files in a subfolder named "stacks" in a dedicated folder.
 
 2) Call the MATLAB function tracker indicating the path to the dedicated folder containing 
 the "stacks" subfolder as an argument. 
 
 ```MATLAB
-tracker("C:\Users\[username]\[...]\experiementFolder")
+tracker("C:\Users\[username]\[...]\experimentFolder")
 ```
 
 3) If the borders were not registered before or are not loaded, the program will prompt 
 you to point the 2 positions of the inside edges of the pillars for each stack found in 
 the folder. These positions correspond to the edges of the pillar that would be tracked. 
-Point the **first the inside edge of the left pillar**, and **then the inside edge of the 
+Point **first the inside edge of the left pillar**, and **then the inside edge of the 
 right pillars** (see image below to identify the position to click). The program 
 automatically opens the next image. 
 
 ![In red, the initial position of the inside edge of the left pillar, in green the the 
 inside edge of the right pillar.](https://github.com/Orion38/Pillar-tracker/blob/main/assets/images/initPosition.PNG)
 
-N.B. : The order of treatment of each TIFF file depends on the creation date of the file, 
+N.B. : The order of treatment of each TIF file depends on the creation date of the file, 
 starting with the oldest.
 
 ## Expected results
  Once the program starts, it measures the shortening of the distance between the two edges
 for each image of the stack. An example for the expected results can be found in 
-*/expectedResults*. For each stack, the script return : 
+*/expectedResults*. For each stack, the script returns : 
 
 - A graph of the variation of the distance between the two inside edges of the pillars 
 for each image of the stack (time step). The graph is also saved in 
-*experiementFolder/figures/diff.fig* .
+*experimentFolder/figures/diff.fig* .
 
 - A *.xls* table containing in each column, the name of each TIFF file in the first line, 
 the "Gap" (distance between the two pillars inside edges on the first image in pixel) in 
 the second line of the table and the variations of this distance in pixel over each 
 image in the lines 4 to the end.
 
-- In the folder *experiementFolder/save/*, a file *lastBords.mat* with the last tracking 
+- In the folder *experimentFolder/save/*, a file *lastBords.mat* with the last tracking 
 position for each file and a file *lastDiff.mat* containing 2 variables *Gap* and *Diff* 
 corresponding to the Gap of each file and the variation of distance in pixel relative to 
 Gap for each image. 
@@ -94,7 +94,7 @@ the profiles by an integer factor.
 - If *sav* is an integer >0, it saves the *check stacks* (see *expected results*), saving 
 1 in image every *sav* images compared to the initial stack.
 
-- *loadBoardes* is 0 or 1. If *loadBoardes* is equal to one and previous pillars edges 
+- *loadBoarders* is 0 or 1. If *loadBoardes* is equal to one and previous pillars edges 
 were selected for the stacks, the program load these positions.
 
 - *skip_tracking* imposed the program to skip the tracking if it is equal to one 
